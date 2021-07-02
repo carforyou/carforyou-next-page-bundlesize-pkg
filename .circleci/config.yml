@@ -1,0 +1,131 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@3.4.2
+
+docker: &DOCKER_NODE
+  docker:
+    - image: cimg/node:14.17.1
+
+jobs:
+  install:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - checkout
+      - restore_cache:
+          key: v3-npm-{{ checksum "package-lock.json" }}
+      - run: npm ci
+      - run: npm ls
+      - save_cache:
+          key: v3-npm-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+      - slack/notify-on-failure:
+          only_for_branches: master
+
+  unit:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          command: npm run test -- --maxWorkers=4
+          no_output_timeout: 3m
+      - slack/notify-on-failure:
+          only_for_branches: master
+
+  lint:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npm run lint
+      - slack/notify-on-failure:
+          only_for_branches: master
+
+  typecheck:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          command: npm run typecheck
+          no_output_timeout: 1m
+      - slack/notify-on-failure:
+          only_for_branches: master
+
+  build:
+    <<: *DOCKER_NODE
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npm run build
+      - persist_to_workspace:
+            root: ~/
+            paths:
+              - project/pkg
+      - slack/notify-on-failure:
+          only_for_branches: master
+
+  release:
+    <<: *DOCKER_NODE
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npx semantic-release
+      - slack/notify-on-failure:
+          only_for_branches: master
+
+  pre_release:
+    <<: *DOCKER_NODE
+    steps:
+      - attach_workspace:
+          at: ~/
+      # manually set PR shell variables to empty to build pull request
+      - run: CI_PULL_REQUEST= CIRCLE_PULL_REQUEST= npx semantic-release
+      - slack/notify-on-failure:
+          only_for_branches: master
+
+workflows:
+  version: 2
+  test_and_release:
+    jobs:
+      - install
+      - unit:
+          requires:
+            - install
+      - lint:
+          requires:
+            - install
+      - typecheck:
+          requires:
+            - install
+      - build:
+          requires:
+            - unit
+            - lint
+            - typecheck
+      - release:
+          requires:
+            - lint
+            - unit
+            - build
+          filters:
+            branches:
+              only: master
+      - pre_release:
+          requires:
+            - lint
+            - unit
+            - build
+          filters:
+            branches:
+              ignore: master
