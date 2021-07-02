@@ -4,7 +4,9 @@
 
 ## Usage
 ```
-npm install @carforyou/example
+npm install @carforyou/next-page-bundlesize -D
+next build
+npx next-page-bundlesize --maxSize="200 kB" --buildDir=.next
 ```
 
 ## Development
@@ -14,11 +16,11 @@ npm run build
 
 You can link your local npm package to integrate it with any local project:
 ```
-cd carforyou-example-pkg
+cd carforyou-next-page-bundlesize-pkg
 npm run build
 
 cd carforyou-listings-web
-npm link ../carforyou-example-pkg/pkg
+npm link ../carforyou-next-page-bundlesize-pkg/pkg
 ```
 
 ## Release a new version
