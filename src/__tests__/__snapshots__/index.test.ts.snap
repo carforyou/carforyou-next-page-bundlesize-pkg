@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cli produces concatenated bundle file 1`] = `
+"// _app.js
+// index.js
+"
+`;
+
+exports[`cli produces config with correct files and sizes 1`] = `"{\\"files\\":[{\\"path\\":\\"src/__tests__/.next/.bundlesize_\\",\\"maxSize\\":\\"1 kB\\"},{\\"path\\":\\"src/__tests__/.next/.bundlesize__app\\",\\"maxSize\\":\\"1 kB\\"}]}"`;

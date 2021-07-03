@@ -1,2 +1,4 @@
 pkg
 node_modules
+src/__tests__/.next/next-page-bundlesize.config.json
+src/__tests__/.next/.bundlesize*

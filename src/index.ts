@@ -1,4 +1,4 @@
-import yargs from "yargs"
+import { parse } from "yargs"
 import path from "path"
 import fs from "fs"
 import { execSync } from "child_process"
@@ -59,11 +59,11 @@ const generateBundleSizeConfig = ({
   return JSON.stringify(config)
 }
 
-export default function run() {
+export default function run(args) {
   try {
-    const args = yargs.argv as unknown as Args
-    const maxSize = args.maxSize || "200 kB"
-    const buildDir = args.buildDir || ".next"
+    const parsedArgs = parse(args) as unknown as Args
+    const maxSize = parsedArgs.maxSize || "200 kB"
+    const buildDir = parsedArgs.buildDir || ".next"
 
     const manifestFile = path.join(buildDir, "build-manifest.json")
     const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
@@ -76,7 +76,7 @@ export default function run() {
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error(err)
+    console.log(err)
     process.exit(1)
   }
 
