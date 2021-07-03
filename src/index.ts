@@ -12,7 +12,7 @@ interface Manifest {
   pages: {
     [pageName: string]: string[]
   }
-  [key: string]: Record<string, string | string[]>
+  [key: string]: Record<string, string | string[]>
 }
 
 const concatenatePageBundles = ({
