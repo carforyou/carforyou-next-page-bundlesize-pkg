@@ -12,7 +12,7 @@ interface Manifest {
   pages: {
     [pageName: string]: string[]
   }
-  [key: string]: Record<string, unknown>
+  [key: string]: Record<string, string | string[]>
 }
 
 const concatenatePageBundles = ({
@@ -74,10 +74,11 @@ export default function run() {
     fs.writeFileSync(configFile, config)
 
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
-    process.exit(0)
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(err)
     process.exit(1)
   }
+
+  process.exit(0)
 }
