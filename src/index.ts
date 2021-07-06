@@ -15,11 +15,10 @@ interface Manifest {
   [key: string]: Record<string, string | string[]>
 }
 
-const combineAppAndPageChunks = (manifest: Manifest, page: string) => Array.from(
+const combineAppAndPageChunks = (manifest: Manifest, page: string) =>
+  Array.from(
     new Set([...manifest.pages["/_app"], ...manifest.pages[page]])
-  )
-    .filter((chunk) => chunk.match(/\.js$/))
-
+  ).filter((chunk) => chunk.match(/\.js$/))
 
 const concatenatePageBundles = ({
   buildDir,
@@ -29,7 +28,9 @@ const concatenatePageBundles = ({
   manifest: Manifest
 }): string[] =>
   Object.keys(manifest.pages).map((page) => {
-    const firstLoadChunks = combineAppAndPageChunks(manifest, page).map((chunk) => path.join(buildDir, chunk))
+    const firstLoadChunks = combineAppAndPageChunks(manifest, page).map(
+      (chunk) => path.join(buildDir, chunk)
+    )
 
     const outFile = path.join(
       buildDir,
