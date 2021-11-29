@@ -17,7 +17,10 @@ export const getPreviousConfig = (
     const config = fs.readFileSync(path.join(buildDir, fileName)).toString()
     return JSON.parse(config)
   } catch (error) {
-    console.log("File not existing or not found... using default values")
+    // eslint-disable-next-line no-console
+    console.log(
+      "Previous config file not existing or not found... using default values"
+    )
     return null
   }
 }
