@@ -74,5 +74,7 @@ export const getMaxSize = (
   const oldPageConfig = oldConfiguration.files.find(
     (page) => page.path === pageBundleName
   )
-  return oldPageConfig?.maxSize ? oldPageConfig.maxSize : fallbackSize
+  return oldPageConfig && oldPageConfig.maxSize
+    ? oldPageConfig.maxSize
+    : fallbackSize
 }
