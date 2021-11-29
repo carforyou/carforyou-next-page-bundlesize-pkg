@@ -12,7 +12,7 @@ import {
 interface Args {
   maxSize: string
   buildDir: string
-  delta: number
+  delta?: number
 }
 
 interface Manifest {
@@ -77,18 +77,31 @@ const generateBundleSizeConfig = ({
   }
 }
 
+const extractArgs = (args) => {
+  const parsedArgs = parse(args) as unknown as Args
+  const maxSize = parsedArgs.maxSize || "200 kB"
+  const buildDir = parsedArgs.buildDir || ".next"
+  const delta = parsedArgs.delta || 0
+
+  return {
+    maxSize,
+    buildDir,
+    delta,
+  }
+}
+
 export default async function run(args) {
   try {
-    const parsedArgs = parse(args) as unknown as Args
-    const maxSize = parsedArgs.maxSize || "200 kB"
-    const buildDir = parsedArgs.buildDir || ".next"
-    const delta = parsedArgs.delta || 0
+    const branch = process.env.CIRCLE_BRANCH
+    const s3Bucket = process.env.BUNDLESIZE_S3_BUCKET
+    const s3Key = process.env.BUNDLESIZE_S3_KEY
 
+    const { maxSize, buildDir, delta } = extractArgs(args)
     const manifestFile = path.join(buildDir, "build-manifest.json")
     const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
 
     const pageBundles = concatenatePageBundles({ buildDir, manifest })
-    const previousConfiguration = await downloadPreviousConfig()
+    const previousConfiguration = await downloadPreviousConfig(s3Bucket, s3Key)
     const config = generateBundleSizeConfig({
       pageBundles,
       maxSize,
@@ -97,10 +110,13 @@ export default async function run(args) {
     const configFile = path.join(buildDir, "next-page-bundlesize.config.json")
     fs.writeFileSync(configFile, JSON.stringify(config))
 
-    const result = execSync(`npx bundlesize --config=${configFile}`).toString()
-    console.log(result)
+    execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 
-    uploadNewConfig(updateConfigurationWithNewBundleSizes(config, delta))
+    // TODO: fail when upload failed
+    if (branch === "master" && s3Bucket && s3Key) {
+      const newConfig = updateConfigurationWithNewBundleSizes(config, delta)
+      uploadNewConfig(newConfig, s3Bucket, s3Key)
+    }
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err)
