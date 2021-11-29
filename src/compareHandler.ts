@@ -8,6 +8,10 @@ export const downloadPreviousConfig = async (
   s3Bucket: string,
   s3Key: string
 ): Promise<BundleSizeConfig> => {
+  console.log("download previous config...", s3Bucket, s3Key)
+  if (!(s3Bucket && s3Key)) {
+    return null
+  }
   let config = null
   new S3().getObject({ Bucket: s3Bucket, Key: s3Key }, (err, data) => {
     if (err) {

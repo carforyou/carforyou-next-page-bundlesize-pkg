@@ -113,7 +113,9 @@ export default async function run(args) {
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 
     // TODO: fail when upload failed
-    if (branch === "master" && s3Bucket && s3Key) {
+    // TODO: uncomment
+    //if (branch === "master" && s3Bucket && s3Key) {
+    if (s3Bucket && s3Key) {
       const newConfig = updateConfigurationWithNewBundleSizes(config, delta)
       uploadNewConfig(newConfig, s3Bucket, s3Key)
     }
