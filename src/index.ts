@@ -2,10 +2,11 @@ import { parse } from "yargs"
 import path from "path"
 import fs from "fs"
 import { execSync } from "child_process"
+
 import {
+  getMaxSize,
   getPreviousConfig,
   updateConfigurationWithNewBundleSizes,
-  getMaxSize,
   updatePreviousConfig,
 } from "./compareHandler"
 

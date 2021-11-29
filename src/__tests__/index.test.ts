@@ -1,7 +1,6 @@
 import fs from "fs"
 
 import run from "../index"
-import * as compareHandler from "../compareHandler"
 
 const validRunConfig = [
   "jest",

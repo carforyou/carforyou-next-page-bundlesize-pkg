@@ -1,8 +1,10 @@
-import { BundleSizeConfig } from "./index"
-import fs from "fs"
-const compressedSize = require("bundlesize/src/compressed-size")
 import path from "path"
-const bytes = require("bytes")
+import fs from "fs"
+import bytes from "bytes"
+// eslint-disable-next-line import/no-internal-modules
+import compressedSize from "bundlesize/src/compressed-size"
+
+import { BundleSizeConfig } from "./index"
 
 export const getPreviousConfig = (
   buildDir: string,
