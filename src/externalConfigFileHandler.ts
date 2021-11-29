@@ -25,21 +25,23 @@ export const getPreviousConfig = (
   }
 }
 
-export const updatePreviousConfig = (
-  newConfig: BundleSizeConfig,
+export const createNewConfigFile = (
+  oldConfig: BundleSizeConfig,
+  delta: number,
   buildDir: string,
   fileName?: string
 ) => {
   if (!fileName) {
     return null
   }
+  const newConfig = updateConfigurationWithNewBundleSizes(oldConfig, delta)
   fs.writeFileSync(
     path.join(buildDir, "new-" + fileName),
     JSON.stringify(newConfig)
   )
 }
 
-export const updateConfigurationWithNewBundleSizes = (
+const updateConfigurationWithNewBundleSizes = (
   config: BundleSizeConfig,
   delta: number
 ): BundleSizeConfig => {
@@ -54,19 +56,4 @@ export const updateConfigurationWithNewBundleSizes = (
   return {
     files: newConfig,
   }
-}
-
-export const getMaxSize = (
-  pageBundleName: string,
-  fallbackSize: string,
-  oldConfiguration?: BundleSizeConfig
-): string => {
-  if (!oldConfiguration) return fallbackSize
-
-  const oldPageConfig = oldConfiguration.files.find(
-    (page) => page.path === pageBundleName
-  )
-  return oldPageConfig && oldPageConfig.maxSize
-    ? oldPageConfig.maxSize
-    : fallbackSize
 }

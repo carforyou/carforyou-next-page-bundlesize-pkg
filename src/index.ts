@@ -4,11 +4,9 @@ import fs from "fs"
 import { execSync } from "child_process"
 
 import {
-  getMaxSize,
+  createNewConfigFile,
   getPreviousConfig,
-  updateConfigurationWithNewBundleSizes,
-  updatePreviousConfig,
-} from "./compareHandler"
+} from "./externalConfigFileHandler"
 
 interface Args {
   maxSize: string
@@ -62,6 +60,21 @@ const concatenatePageBundles = ({
     return outFile
   })
 
+const getMaxSize = (
+  pageBundleName: string,
+  fallbackSize: string,
+  oldConfiguration?: BundleSizeConfig
+): string => {
+  if (!oldConfiguration) return fallbackSize
+
+  const oldPageConfig = oldConfiguration.files.find(
+    (page) => page.path === pageBundleName
+  )
+  return oldPageConfig && oldPageConfig.maxSize
+    ? oldPageConfig.maxSize
+    : fallbackSize
+}
+
 const generateBundleSizeConfig = ({
   pageBundles,
   maxSize,
@@ -83,7 +96,7 @@ const extractArgs = (args) => {
   const parsedArgs = parse(args) as unknown as Args
   const maxSize = parsedArgs.maxSize || "200 kB"
   const buildDir = parsedArgs.buildDir || ".next"
-  const delta = parsedArgs.delta || 0
+  const delta = parsedArgs.delta || 1
 
   return {
     maxSize,
@@ -115,8 +128,7 @@ export default function run(args) {
 
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 
-    const newConfig = updateConfigurationWithNewBundleSizes(config, delta)
-    updatePreviousConfig(newConfig, buildDir, previousConfigFileName)
+    createNewConfigFile(config, delta, buildDir, previousConfigFileName)
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err)
