@@ -1,54 +1,31 @@
 import { BundleSizeConfig } from "./index"
 import fs from "fs"
 const compressedSize = require("bundlesize/src/compressed-size")
-import { S3 } from "aws-sdk"
+import path from "path"
+const bytes = require("bytes")
 
-/** On all branches (fetch master config file) **/
-export const downloadPreviousConfig = async (
-  s3Bucket: string,
-  s3Key: string
-): Promise<BundleSizeConfig> => {
-  console.log("download previous config...", s3Bucket, s3Key)
-  if (!(s3Bucket && s3Key)) {
+export const getPreviousConfig = (
+  buildDir: string,
+  fileName?: string
+): BundleSizeConfig => {
+  if (!fileName) {
     return null
   }
-  let config = null
-  new S3().getObject({ Bucket: s3Bucket, Key: s3Key }, (err, data) => {
-    if (err) {
-      throw err
-    } else {
-      console.log(data)
-      config = data
-    }
-  })
-  return config
+  const config = fs.readFileSync(path.join(buildDir, fileName)).toString()
+  return JSON.parse(config)
 }
 
-/** Only master **/
-export const uploadNewConfig = (
+export const updatePreviousConfig = (
   newConfig: BundleSizeConfig,
-  s3Bucket: string,
-  s3Key: string
+  buildDir: string,
+  fileName?: string
 ) => {
-  console.log("uploading...")
-  console.log(newConfig)
-  new S3().upload(
-    {
-      ACL: "private",
-      Bucket: s3Bucket,
-      Key: s3Key,
-      Body: JSON.stringify(newConfig),
-    },
-    (err) => {
-      if (err) {
-        throw err
-      } else {
-        // eslint-disable-next-line no-console
-        console.info(
-          "Successfully uploaded new bundlesize master configuration"
-        )
-      }
-    }
+  if (!fileName) {
+    return null
+  }
+  fs.writeFileSync(
+    path.join(buildDir, "new-" + fileName),
+    JSON.stringify(newConfig)
   )
 }
 
@@ -59,8 +36,9 @@ export const updateConfigurationWithNewBundleSizes = (
   const newConfig = config.files.map((file) => {
     return {
       path: file.path,
-      maxSize:
-        compressedSize(fs.readFileSync(file.path, "utf8"), "gzip") + delta,
+      maxSize: bytes(
+        compressedSize(fs.readFileSync(file.path, "utf8"), "gzip") + delta
+      ),
     }
   })
   return {

@@ -3,16 +3,17 @@ import path from "path"
 import fs from "fs"
 import { execSync } from "child_process"
 import {
-  downloadPreviousConfig,
+  getPreviousConfig,
   updateConfigurationWithNewBundleSizes,
   getMaxSize,
-  uploadNewConfig,
+  updatePreviousConfig,
 } from "./compareHandler"
 
 interface Args {
   maxSize: string
   buildDir: string
   delta?: number
+  previousConfigFileName?: string
 }
 
 interface Manifest {
@@ -87,21 +88,22 @@ const extractArgs = (args) => {
     maxSize,
     buildDir,
     delta,
+    previousConfigFileName: parsedArgs.previousConfigFileName,
   }
 }
 
-export default async function run(args) {
+export default function run(args) {
   try {
-    const branch = process.env.CIRCLE_BRANCH
-    const s3Bucket = process.env.BUNDLESIZE_S3_BUCKET
-    const s3Key = process.env.BUNDLESIZE_S3_KEY
-
-    const { maxSize, buildDir, delta } = extractArgs(args)
+    const { maxSize, buildDir, delta, previousConfigFileName } =
+      extractArgs(args)
     const manifestFile = path.join(buildDir, "build-manifest.json")
     const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
 
     const pageBundles = concatenatePageBundles({ buildDir, manifest })
-    const previousConfiguration = await downloadPreviousConfig(s3Bucket, s3Key)
+    const previousConfiguration = getPreviousConfig(
+      buildDir,
+      previousConfigFileName
+    )
     const config = generateBundleSizeConfig({
       pageBundles,
       maxSize,
@@ -112,13 +114,8 @@ export default async function run(args) {
 
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 
-    // TODO: fail when upload failed
-    // TODO: uncomment
-    //if (branch === "master" && s3Bucket && s3Key) {
-    if (s3Bucket && s3Key) {
-      const newConfig = updateConfigurationWithNewBundleSizes(config, delta)
-      uploadNewConfig(newConfig, s3Bucket, s3Key)
-    }
+    const newConfig = updateConfigurationWithNewBundleSizes(config, delta)
+    updatePreviousConfig(newConfig, buildDir, previousConfigFileName)
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err)
