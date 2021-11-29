@@ -14,6 +14,13 @@ When using [`@carforyou/configuration`](https://github.com/carforyou/carforyou-c
 npx next-page-bundlesize --buildDir=.next-$CONFIG_ENV --maxSize="230 kB"
 ```
 
+If you want to compare your bundles against a previous config and use the fallback maxSize for new pages, you can define it as follows:
+```
+npx next-page-bundlesize --buildDir=.next-$CONFIG_ENV --maxSize="230 kB" --previousConfigFileName=bundlesize.json
+```
+
+The file must be located under `buildDir/previousConfigFileName`. The script creates an updated version `buildDir/new-previousConfigFileName`
+
 ## Development
 ```
 npm run build
