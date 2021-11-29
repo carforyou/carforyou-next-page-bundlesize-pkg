@@ -13,8 +13,13 @@ export const getPreviousConfig = (
   if (!fileName) {
     return null
   }
-  const config = fs.readFileSync(path.join(buildDir, fileName)).toString()
-  return JSON.parse(config)
+  try {
+    const config = fs.readFileSync(path.join(buildDir, fileName)).toString()
+    return JSON.parse(config)
+  } catch (error) {
+    console.log("File not existing or not found... using default values")
+    return null
+  }
 }
 
 export const updatePreviousConfig = (
