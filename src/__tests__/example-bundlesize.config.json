@@ -1,0 +1,152 @@
+{
+  "files": [
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-",
+      "maxSize": "210 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_account",
+      "maxSize": "180 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_-bodyTypeOrMake-",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_-bodyTypeOrMake-_-makeOrModel-",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_-bodyTypeOrMake-_-makeOrModel-_-modelKey-",
+      "maxSize": "200 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_-bodyTypeOrMake-_-makeOrModel-_-modelKey-_-typeSlugAndListingId-",
+      "maxSize": "120 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_c_-makeKey-",
+      "maxSize": "119 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_d_-typeSlugAndListingId-",
+      "maxSize": "114 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_d_newest",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_dealer_-nameSlugAndDealerId-",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_region_-regionKey-",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_search",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_search_advanced",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_auto_search_history",
+      "maxSize": "112 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_buy-now_-listingId-_about",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_buy-now_-listingId-_apply",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_buy-now_-listingId-_success",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_buy-now_cs_-listingId-_about",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_buy-now_cs_-listingId-_apply",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_buy-now_cs_-listingId-_success_-buyNowApplicationKey-",
+      "maxSize": "150 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_buyer-protection",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_embeds_carousel",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_favourites",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_lead-feedback_-listingId-_confirm",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_lead-feedback_-listingId-_reject",
+      "maxSize": "240 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_lead-success_-listingId-",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_lfb_-batchKey-",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_lfc_-listingId-",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_lfr_-listingId-",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_loan_-listingId-_apply",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_loan_-listingId-_success",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_makes",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_saved-search_extend",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_saved-search_subscribe",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize_-language-_saved-search_unsubscribe",
+      "maxSize": "225 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize__app",
+      "maxSize": "100 kB"
+    },
+    {
+      "path": ".next-stage-prod/.bundlesize__error",
+      "maxSize": "225 kB"
+    }
+  ]
+}

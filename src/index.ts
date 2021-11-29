@@ -2,10 +2,17 @@ import { parse } from "yargs"
 import path from "path"
 import fs from "fs"
 import { execSync } from "child_process"
+import {
+  downloadPreviousConfig,
+  updateConfigurationWithNewBundleSizes,
+  getMaxSize,
+  uploadNewConfig,
+} from "./compareHandler"
 
 interface Args {
   maxSize: string
   buildDir: string
+  delta: number
 }
 
 interface Manifest {
@@ -13,6 +20,13 @@ interface Manifest {
     [pageName: string]: string[]
   }
   [key: string]: Record<string, string | string[]>
+}
+
+export interface BundleSizeConfig {
+  files: Array<{
+    path: string
+    maxSize: string
+  }>
 }
 
 const combineAppAndPageChunks = (manifest: Manifest, page: string) =>
@@ -49,34 +63,44 @@ const concatenatePageBundles = ({
 const generateBundleSizeConfig = ({
   pageBundles,
   maxSize,
+  previousConfiguration,
 }: {
   pageBundles: string[]
   maxSize: string
-}): string => {
-  const config = {
-    files: pageBundles.map((pageBundle) => ({
-      path: pageBundle,
-      maxSize: maxSize,
+  previousConfiguration: BundleSizeConfig
+}): BundleSizeConfig => {
+  return {
+    files: pageBundles.map((pageBundleName) => ({
+      path: pageBundleName,
+      maxSize: getMaxSize(pageBundleName, maxSize, previousConfiguration),
     })),
   }
-  return JSON.stringify(config)
 }
 
-export default function run(args) {
+export default async function run(args) {
   try {
     const parsedArgs = parse(args) as unknown as Args
     const maxSize = parsedArgs.maxSize || "200 kB"
     const buildDir = parsedArgs.buildDir || ".next"
+    const delta = parsedArgs.delta || 0
 
     const manifestFile = path.join(buildDir, "build-manifest.json")
     const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
 
     const pageBundles = concatenatePageBundles({ buildDir, manifest })
-    const config = generateBundleSizeConfig({ pageBundles, maxSize })
+    const previousConfiguration = await downloadPreviousConfig()
+    const config = generateBundleSizeConfig({
+      pageBundles,
+      maxSize,
+      previousConfiguration,
+    })
     const configFile = path.join(buildDir, "next-page-bundlesize.config.json")
-    fs.writeFileSync(configFile, config)
+    fs.writeFileSync(configFile, JSON.stringify(config))
 
-    execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
+    const result = execSync(`npx bundlesize --config=${configFile}`).toString()
+    console.log(result)
+
+    uploadNewConfig(updateConfigurationWithNewBundleSizes(config, delta))
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err)

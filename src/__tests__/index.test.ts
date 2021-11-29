@@ -3,9 +3,9 @@ import fs from "fs"
 import run from "../index"
 
 describe("cli", () => {
-  it("produces config with correct files and sizes", () => {
+  it("produces config with correct files and sizes", async () => {
     const mockExit = jest.spyOn(process, "exit").mockImplementation()
-    run([
+    await run([
       "jest",
       "./node_modules/.bin/jest",
       "--maxSize",
@@ -18,12 +18,12 @@ describe("cli", () => {
       .readFileSync("./src/__tests__/.next/next-page-bundlesize.config.json")
       .toString()
     expect(config).toMatchSnapshot()
-    expect(mockExit).toHaveBeenCalledWith(0)
+    await expect(mockExit).toHaveBeenCalledWith(0)
   })
 
-  it("produces concatenated bundle file", () => {
+  it("produces concatenated bundle file", async () => {
     const mockExit = jest.spyOn(process, "exit").mockImplementation()
-    run([
+    await run([
       "jest",
       "./node_modules/.bin/jest",
       "--maxSize",
@@ -36,12 +36,12 @@ describe("cli", () => {
       .readFileSync("./src/__tests__/.next/.bundlesize_")
       .toString()
     expect(page).toMatchSnapshot()
-    expect(mockExit).toHaveBeenCalledWith(0)
+    await expect(mockExit).toHaveBeenCalledWith(0)
   })
 
-  it("fails when bundles are larger than the limit", () => {
+  it("fails when bundles are larger than the limit", async () => {
     const mockExit = jest.spyOn(process, "exit").mockImplementation()
-    run([
+    await run([
       "jest",
       "./node_modules/.bin/jest",
       "--maxSize",
@@ -49,6 +49,6 @@ describe("cli", () => {
       "--buildDir",
       "./src/__tests__/.next",
     ])
-    expect(mockExit).toHaveBeenCalledWith(1)
+    await expect(mockExit).toHaveBeenCalledWith(1)
   })
 })
