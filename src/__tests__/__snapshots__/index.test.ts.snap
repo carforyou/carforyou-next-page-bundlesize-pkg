@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cli adds a delta to the new config if defined 1`] = `"{\\"files\\":[{\\"path\\":\\"src/__tests__/.next/.bundlesize_\\",\\"maxSize\\":\\"50B\\"},{\\"path\\":\\"src/__tests__/.next/.bundlesize__app\\",\\"maxSize\\":\\"41B\\"}]}"`;
+exports[`cli adds a delta to the new config if defined 1`] = `"{\\"files\\":[{\\"path\\":\\"src/__tests__/.next/.bundlesize_\\",\\"maxSize\\":\\"10.04KB\\"},{\\"path\\":\\"src/__tests__/.next/.bundlesize__app\\",\\"maxSize\\":\\"10.03KB\\"}]}"`;
 
 exports[`cli produces concatenated bundle file 1`] = `
 "// _app.js
@@ -10,6 +10,6 @@ exports[`cli produces concatenated bundle file 1`] = `
 
 exports[`cli produces config with correct files and sizes 1`] = `"{\\"files\\":[{\\"path\\":\\"src/__tests__/.next/.bundlesize_\\",\\"maxSize\\":\\"1 kB\\"},{\\"path\\":\\"src/__tests__/.next/.bundlesize__app\\",\\"maxSize\\":\\"1 kB\\"}]}"`;
 
-exports[`cli uses the previous config if defined 1`] = `"{\\"files\\":[{\\"path\\":\\"src/__tests__/.next/.bundlesize_\\",\\"maxSize\\":\\"130B\\"},{\\"path\\":\\"src/__tests__/.next/.bundlesize__app\\",\\"maxSize\\":\\"130B\\"}]}"`;
+exports[`cli uses the previous config if defined 1`] = `"{\\"files\\":[{\\"path\\":\\"src/__tests__/.next/.bundlesize_\\",\\"maxSize\\":\\"130KB\\"},{\\"path\\":\\"src/__tests__/.next/.bundlesize__app\\",\\"maxSize\\":\\"130KB\\"}]}"`;
 
-exports[`cli uses the targetSize if the page is smaller than that 1`] = `"{\\"files\\":[{\\"path\\":\\"src/__tests__/.next/.bundlesize_\\",\\"maxSize\\":\\"130B\\"},{\\"path\\":\\"src/__tests__/.next/.bundlesize__app\\",\\"maxSize\\":\\"130B\\"}]}"`;
+exports[`cli uses the targetSize if the page is smaller than that 1`] = `"{\\"files\\":[{\\"path\\":\\"src/__tests__/.next/.bundlesize_\\",\\"maxSize\\":\\"130KB\\"},{\\"path\\":\\"src/__tests__/.next/.bundlesize__app\\",\\"maxSize\\":\\"130KB\\"}]}"`;
