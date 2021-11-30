@@ -2,11 +2,11 @@
   "files": [
     {
       "path": "src/__tests__/.next/.bundlesize_",
-      "maxSize": "10 kB"
+      "maxSize": "150 kB"
     },
     {
       "path": "src/__tests__/.next/.bundlesize__app",
-      "maxSize": "5 kB"
+      "maxSize": "170 kB"
     }
   ]
 }

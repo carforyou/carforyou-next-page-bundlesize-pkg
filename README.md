@@ -14,12 +14,14 @@ When using [`@carforyou/configuration`](https://github.com/carforyou/carforyou-c
 npx next-page-bundlesize --buildDir=.next-$CONFIG_ENV --maxSize="230 kB"
 ```
 
-If you want to compare your bundles against a previous config and use the fallback maxSize for new pages, you can define it as follows:
-```
-npx next-page-bundlesize --buildDir=.next-$CONFIG_ENV --maxSize="230 kB" --previousConfigFileName=bundlesize.json
-```
-
-The file must be located under `buildDir/previousConfigFileName`. The script creates an updated version `buildDir/new-previousConfigFileName`
+### Arguments
+|                 Argument | Description                                                                                                                                                                                                                                                                                                                      | Default value |
+|-------------------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| --maxSize                | Max size for new pages. If no previous config is specified, it is applied for all pages.                                                                                                                                                                                                                                         | "200 kB"      |
+| --buildDir               | Directory where your project is built.                                                                                                                                                                                                                                                                                           | ".next"       |
+| --delta                  | Delta that is added to the new configuration file. It is unit independent.                                                                                                                                                                                                                                                       | 1             |
+| --previousConfigFileName | If you want to compare the bundlesize against a previous configuration and not the maxSize. The file must be located under the buildDir `buildDir/previousConfigFileName`.  The package will create an updated configuration for further usage in the same directory `buildDir/new-previousConfigFileName` prefixed with `new`.  | -             |
+| --targetSize             | If the page size is below the targetSize, it will use the targetSize for the new configuration.                                                                                                                                                                                                                                  | 130           |
 
 ## Development
 ```

@@ -13,6 +13,7 @@ interface Args {
   buildDir: string
   delta?: number
   previousConfigFileName?: string
+  targetSize?: number
 }
 
 interface Manifest {
@@ -97,18 +98,20 @@ const extractArgs = (args) => {
   const maxSize = parsedArgs.maxSize || "200 kB"
   const buildDir = parsedArgs.buildDir || ".next"
   const delta = parsedArgs.delta || 1
+  const targetSize = parsedArgs.targetSize || 130
 
   return {
     maxSize,
     buildDir,
     delta,
     previousConfigFileName: parsedArgs.previousConfigFileName,
+    targetSize,
   }
 }
 
 export default function run(args) {
   try {
-    const { maxSize, buildDir, delta, previousConfigFileName } =
+    const { maxSize, buildDir, delta, previousConfigFileName, targetSize } =
       extractArgs(args)
     const manifestFile = path.join(buildDir, "build-manifest.json")
     const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
@@ -128,7 +131,13 @@ export default function run(args) {
 
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 
-    createNewConfigFile(config, delta, buildDir, previousConfigFileName)
+    createNewConfigFile(
+      config,
+      delta,
+      targetSize,
+      buildDir,
+      previousConfigFileName
+    )
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err)

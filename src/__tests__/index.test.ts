@@ -65,8 +65,25 @@ describe("cli", () => {
       ...validRunConfig,
       "--previousConfigFileName",
       "master-config.json",
+      "--targetSize",
+      2,
       "--delta",
       10,
+    ])
+
+    const updatedConfig = fs
+      .readFileSync("./src/__tests__/.next/new-master-config.json")
+      .toString()
+    expect(updatedConfig).toMatchSnapshot()
+  })
+
+  it("uses the targetSize if the page is smaller than that", () => {
+    run([
+      ...validRunConfig,
+      "--previousConfigFileName",
+      "master-config.json",
+      "--targetSize",
+      130,
     ])
 
     const updatedConfig = fs

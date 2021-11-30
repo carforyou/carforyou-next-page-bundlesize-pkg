@@ -6,6 +6,27 @@ import compressedSize from "bundlesize/src/compressed-size"
 
 import { BundleSizeConfig } from "./index"
 
+export const createNewConfigFile = (
+  oldConfig: BundleSizeConfig,
+  delta: number,
+  targetSize: number,
+  buildDir: string,
+  fileName?: string
+) => {
+  if (!fileName) {
+    return null
+  }
+  const newConfig = updateConfigurationWithNewBundleSizes(
+    oldConfig,
+    delta,
+    targetSize
+  )
+  fs.writeFileSync(
+    path.join(buildDir, "new-" + fileName),
+    JSON.stringify(newConfig)
+  )
+}
+
 export const getPreviousConfig = (
   buildDir: string,
   fileName?: string
@@ -25,32 +46,17 @@ export const getPreviousConfig = (
   }
 }
 
-export const createNewConfigFile = (
-  oldConfig: BundleSizeConfig,
-  delta: number,
-  buildDir: string,
-  fileName?: string
-) => {
-  if (!fileName) {
-    return null
-  }
-  const newConfig = updateConfigurationWithNewBundleSizes(oldConfig, delta)
-  fs.writeFileSync(
-    path.join(buildDir, "new-" + fileName),
-    JSON.stringify(newConfig)
-  )
-}
-
 const updateConfigurationWithNewBundleSizes = (
   config: BundleSizeConfig,
-  delta: number
+  delta: number,
+  targetSize: number
 ): BundleSizeConfig => {
   const newConfig = config.files.map((file) => {
+    const size =
+      compressedSize(fs.readFileSync(file.path, "utf8"), "gzip") + delta
     return {
       path: file.path,
-      maxSize: bytes(
-        compressedSize(fs.readFileSync(file.path, "utf8"), "gzip") + delta
-      ),
+      maxSize: bytes(size < targetSize ? targetSize : size),
     }
   })
   return {
