@@ -97,8 +97,8 @@ const extractArgs = (args) => {
   const parsedArgs = parse(args) as unknown as Args
   const maxSize = parsedArgs.maxSize || "200 kB"
   const buildDir = parsedArgs.buildDir || ".next"
-  const delta = parsedArgs.delta || 1
-  const targetSize = parsedArgs.targetSize || 130
+  const delta = (parsedArgs.delta || 2) * 1024
+  const targetSize = (parsedArgs.targetSize || 130) * 1024
 
   return {
     maxSize,
