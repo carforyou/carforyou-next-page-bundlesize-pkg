@@ -14,23 +14,29 @@ export const createNewConfigFile = (
   fileName?: string
 ) => {
   if (!fileName) {
-    return null
+    return
   }
-  const newConfig = updateConfigurationWithNewBundleSizes(
-    oldConfig,
-    delta,
-    targetSize
-  )
-  fs.writeFileSync(
-    path.join(buildDir, "new-" + fileName),
-    JSON.stringify(newConfig)
-  )
+
+  try {
+    const newConfig = updateConfigurationWithNewBundleSizes(
+      oldConfig,
+      delta,
+      targetSize
+    )
+    fs.writeFileSync(
+      path.join(buildDir, "new-" + fileName),
+      JSON.stringify(newConfig)
+    )
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Cannot create new config file", error)
+  }
 }
 
 export const getPreviousConfig = (
   buildDir: string,
   fileName?: string
-): BundleSizeConfig => {
+): BundleSizeConfig | null => {
   if (!fileName) {
     return null
   }

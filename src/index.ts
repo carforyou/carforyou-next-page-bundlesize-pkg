@@ -83,7 +83,7 @@ const generateBundleSizeConfig = ({
 }: {
   pageBundles: string[]
   maxSize: string
-  previousConfiguration: BundleSizeConfig
+  previousConfiguration?: BundleSizeConfig
 }): BundleSizeConfig => {
   return {
     files: pageBundles.map((pageBundleName) => ({
