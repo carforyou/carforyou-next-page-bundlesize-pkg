@@ -55,39 +55,22 @@ describe("cli", () => {
     run([...validRunConfig, "--previousConfigFileName", "master-config.json"])
 
     const updatedConfig = fs
-      .readFileSync("./src/__tests__/.next/new-master-config.json")
+      .readFileSync("./src/__tests__/.next/bundlesize.json")
       .toString()
     expect(updatedConfig).toMatchSnapshot()
   })
 
-  it("adds a delta to the new config if defined", () => {
+  it("adds a delta to the new config if smaller than maxSize", () => {
     run([
       ...validRunConfig,
       "--previousConfigFileName",
       "master-config.json",
-      "--targetSize",
-      2,
       "--delta",
-      10,
+      "5 kB",
     ])
 
     const updatedConfig = fs
-      .readFileSync("./src/__tests__/.next/new-master-config.json")
-      .toString()
-    expect(updatedConfig).toMatchSnapshot()
-  })
-
-  it("uses the targetSize if the page is smaller than that", () => {
-    run([
-      ...validRunConfig,
-      "--previousConfigFileName",
-      "master-config.json",
-      "--targetSize",
-      130,
-    ])
-
-    const updatedConfig = fs
-      .readFileSync("./src/__tests__/.next/new-master-config.json")
+      .readFileSync("./src/__tests__/.next/bundlesize.json")
       .toString()
     expect(updatedConfig).toMatchSnapshot()
   })

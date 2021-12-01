@@ -9,9 +9,9 @@ import {
 } from "./externalConfigFileHandler"
 
 interface Args {
-  maxSize: string // maxSize becomes 130kb -> targetSize
+  maxSize: string
   buildDir: string
-  delta: string // size that pages can get larger below the maxSize threshold (e.g. 5kB)
+  delta: string
   previousConfigFileName?: string
 }
 
