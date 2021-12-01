@@ -60,21 +60,6 @@ const concatenatePageBundles = ({
     return outFile
   })
 
-const getMaxSize = (
-  pageBundleName: string,
-  fallbackSize: string,
-  oldConfiguration?: BundleSizeConfig
-): string => {
-  if (!oldConfiguration) return fallbackSize
-
-  const oldPageConfig = oldConfiguration.files.find(
-    (page) => page.path === pageBundleName
-  )
-  return oldPageConfig && oldPageConfig.maxSize
-    ? oldPageConfig.maxSize
-    : fallbackSize
-}
-
 const generateBundleSizeConfig = ({
   pageBundles,
   maxSize,
@@ -82,12 +67,15 @@ const generateBundleSizeConfig = ({
 }: {
   pageBundles: string[]
   maxSize: string
-  previousConfiguration?: BundleSizeConfig
+  previousConfiguration: BundleSizeConfig
 }): BundleSizeConfig => {
+  const previousConfigurationMap = new Map(
+    previousConfiguration.files.map((config) => [config.path, config.maxSize])
+  )
   return {
     files: pageBundles.map((pageBundleName) => ({
       path: pageBundleName,
-      maxSize: getMaxSize(pageBundleName, maxSize, previousConfiguration),
+      maxSize: previousConfigurationMap.get(pageBundleName) || maxSize,
     })),
   }
 }

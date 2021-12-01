@@ -31,9 +31,12 @@ export const createNewConfigFile = (
 export const getPreviousConfig = (
   buildDir: string,
   fileName?: string
-): BundleSizeConfig | null => {
+): BundleSizeConfig => {
+  const emptyBundleSizeConfig: BundleSizeConfig = { files: [] }
   if (!fileName) {
-    return null
+    // eslint-disable-next-line no-console
+    console.log("No config file specified... using maxSize as default")
+    return emptyBundleSizeConfig
   }
   try {
     const config = fs.readFileSync(path.join(buildDir, fileName)).toString()
@@ -41,9 +44,9 @@ export const getPreviousConfig = (
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(
-      "Previous config file not existing or not found... using default values"
+      "Previous config file not existing or invalid JSON format... using maxSize as default"
     )
-    return null
+    return emptyBundleSizeConfig
   }
 }
 
