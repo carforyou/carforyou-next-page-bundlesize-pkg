@@ -20,7 +20,7 @@ export const writeNewConfigFile = (
     )
     fs.writeFileSync(
       path.join(buildDir, "bundlesize.json"),
-      JSON.stringify(newConfig, null, 2)
+      JSON.stringify(newConfig)
     )
   } catch (error) {
     // eslint-disable-next-line no-console
