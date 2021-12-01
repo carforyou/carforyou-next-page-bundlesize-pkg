@@ -6,7 +6,7 @@ import compressedSize from "bundlesize/src/compressed-size"
 
 import { BundleSizeConfig } from "./index"
 
-export const createNewConfigFile = (
+export const writeNewConfigFile = (
   oldConfig: BundleSizeConfig,
   delta: string,
   maxSize: string,

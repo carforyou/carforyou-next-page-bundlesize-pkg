@@ -4,8 +4,8 @@ import fs from "fs"
 import { execSync } from "child_process"
 
 import {
-  createNewConfigFile,
   getPreviousConfig,
+  writeNewConfigFile,
 } from "./externalConfigFileHandler"
 
 interface Args {
@@ -116,7 +116,7 @@ export default function run(args) {
 
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 
-    createNewConfigFile(config, delta, maxSize, buildDir)
+    writeNewConfigFile(config, delta, maxSize, buildDir)
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err)
