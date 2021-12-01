@@ -8,23 +8,18 @@ import { BundleSizeConfig } from "./index"
 
 export const createNewConfigFile = (
   oldConfig: BundleSizeConfig,
-  delta: number,
-  targetSize: number,
-  buildDir: string,
-  fileName?: string
+  delta: string,
+  maxSize: string,
+  buildDir: string
 ) => {
-  if (!fileName) {
-    return
-  }
-
   try {
     const newConfig = updateConfigurationWithNewBundleSizes(
       oldConfig,
       delta,
-      targetSize
+      maxSize
     )
     fs.writeFileSync(
-      path.join(buildDir, "new-" + fileName),
+      path.join(buildDir, "bundlesize.json"),
       JSON.stringify(newConfig)
     )
   } catch (error) {
@@ -54,15 +49,24 @@ export const getPreviousConfig = (
 
 const updateConfigurationWithNewBundleSizes = (
   config: BundleSizeConfig,
-  delta: number,
-  targetSize: number
+  delta: string,
+  maxSize: string
 ): BundleSizeConfig => {
   const newConfig = config.files.map((file) => {
-    const size =
-      compressedSize(fs.readFileSync(file.path, "utf8"), "gzip") + delta
+    const sizeInBytes = compressedSize(
+      fs.readFileSync(file.path, "utf8"),
+      "gzip"
+    )
+    const deltaInBytes = bytes(delta)
+    const maxSizeInBytes = bytes(maxSize)
+
     return {
       path: file.path,
-      maxSize: bytes(size < targetSize ? targetSize : size),
+      maxSize: bytes(
+        sizeInBytes < maxSizeInBytes
+          ? sizeInBytes + deltaInBytes
+          : sizeInBytes + 100 // magic number 100 is to prevent failing if it's exactly the same size
+      ),
     }
   })
   return {

@@ -9,11 +9,10 @@ import {
 } from "./externalConfigFileHandler"
 
 interface Args {
-  maxSize: string
+  maxSize: string // maxSize becomes 130kb -> targetSize
   buildDir: string
-  delta?: number
+  delta: string // size that pages can get larger below the maxSize threshold (e.g. 5kB)
   previousConfigFileName?: string
-  targetSize?: number
 }
 
 interface Manifest {
@@ -97,21 +96,19 @@ const extractArgs = (args) => {
   const parsedArgs = parse(args) as unknown as Args
   const maxSize = parsedArgs.maxSize || "200 kB"
   const buildDir = parsedArgs.buildDir || ".next"
-  const delta = (parsedArgs.delta || 2) * 1024
-  const targetSize = (parsedArgs.targetSize || 130) * 1024
+  const delta = parsedArgs.delta || "5 kB"
 
   return {
     maxSize,
     buildDir,
     delta,
     previousConfigFileName: parsedArgs.previousConfigFileName,
-    targetSize,
   }
 }
 
 export default function run(args) {
   try {
-    const { maxSize, buildDir, delta, previousConfigFileName, targetSize } =
+    const { maxSize, buildDir, delta, previousConfigFileName } =
       extractArgs(args)
     const manifestFile = path.join(buildDir, "build-manifest.json")
     const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
@@ -131,13 +128,7 @@ export default function run(args) {
 
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 
-    createNewConfigFile(
-      config,
-      delta,
-      targetSize,
-      buildDir,
-      previousConfigFileName
-    )
+    createNewConfigFile(config, delta, maxSize, buildDir)
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err)
