@@ -112,7 +112,7 @@ export default function run(args) {
       previousConfiguration,
     })
     const configFile = path.join(buildDir, "next-page-bundlesize.config.json")
-    fs.writeFileSync(configFile, JSON.stringify(config))
+    fs.writeFileSync(configFile, JSON.stringify(config, null, 2))
 
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 

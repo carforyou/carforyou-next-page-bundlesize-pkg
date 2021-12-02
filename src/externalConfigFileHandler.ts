@@ -20,7 +20,7 @@ export const writeNewConfigFile = (
     )
     fs.writeFileSync(
       path.join(buildDir, "bundlesize.json"),
-      JSON.stringify(newConfig)
+      JSON.stringify(newConfig, null, 2)
     )
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -55,6 +55,7 @@ const updateConfigurationWithNewBundleSizes = (
   delta: string,
   maxSize: string
 ): BundleSizeConfig => {
+  let totalBundleSize = 0
   const newConfig = config.files.map((file) => {
     const sizeInBytes = compressedSize(
       fs.readFileSync(file.path, "utf8"),
@@ -62,6 +63,7 @@ const updateConfigurationWithNewBundleSizes = (
     )
     const deltaInBytes = bytes(delta)
     const maxSizeInBytes = bytes(maxSize)
+    totalBundleSize += sizeInBytes
 
     return {
       path: file.path,
@@ -72,6 +74,10 @@ const updateConfigurationWithNewBundleSizes = (
       ),
     }
   })
+
+  // eslint-disable-next-line no-console
+  console.log("Total bundlesize of your project is", bytes(totalBundleSize))
+
   return {
     files: newConfig,
   }
