@@ -70,7 +70,7 @@ const updateConfigurationWithNewBundleSizes = (
       maxSize: bytes(
         sizeInBytes < maxSizeInBytes
           ? sizeInBytes + deltaInBytes
-          : sizeInBytes + 100 // magic number 100 is to prevent failing if it's exactly the same size
+          : sizeInBytes + 500 // magic number 500 is to prevent failing if it's exactly the same size
       ),
     }
   })
