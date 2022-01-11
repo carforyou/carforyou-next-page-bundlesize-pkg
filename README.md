@@ -33,7 +33,7 @@ cd carforyou-next-page-bundlesize-pkg
 npm run build
 
 cd carforyou-listings-web
-npm link ../carforyou-next-page-bundlesize-pkg/pkg
+npm link ../carforyou-next-page-bundlesize-pkg
 ```
 
 ## Release a new version
