@@ -35,7 +35,6 @@
   "bin" : {
     "next-page-bundlesize": "./pkg/index.js"
   },
-  "main": "pkg/esm/index.js",
   "files": [
     "pkg/**/*"
   ]
