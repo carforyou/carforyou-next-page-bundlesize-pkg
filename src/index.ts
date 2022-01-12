@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { parse } from "yargs"
 import path from "path"
 import fs from "fs"
