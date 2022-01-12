@@ -4,7 +4,7 @@
   "description": "Page-level bundlesize check for next.js",
   "scripts": {
     "version": "npm run build",
-    "build": "rimraf pkg && tsc --outDir pkg/esm && tsc --module commonjs --target es5 --outDir pkg/cjs",
+    "build": "rimraf pkg && tsc --outDir pkg",
     "lint": "eslint --ext ts,js,tsx,jsx,json .",
     "format": "npm run lint -- --fix",
     "typecheck": "tsc --noEmit",
@@ -32,9 +32,10 @@
     "bundlesize": "0.18.1",
     "yargs": "17.3.1"
   },
-  "bin" : { "next-page-bundlesize": "./pkg/cjs/index.js" },
-  "main": "pkg/cjs/index.js",
-  "module": "pkg/esm/index.js",
+  "bin" : {
+    "next-page-bundlesize": "./pkg/index.js"
+  },
+  "main": "pkg/esm/index.js",
   "files": [
     "pkg/**/*"
   ]
