@@ -96,8 +96,7 @@ const extractArgs = (args) => {
 }
 
 export default function run(args) {
-  const { maxSize, buildDir, delta, previousConfigFileName } =
-    extractArgs(args)
+  const { maxSize, buildDir, delta, previousConfigFileName } = extractArgs(args)
   const manifestFile = path.join(buildDir, "build-manifest.json")
   const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
 
