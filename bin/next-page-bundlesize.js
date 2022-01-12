@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-'use strict'
 
 // eslint-disable-next-line import/no-internal-modules
 const run = require("../pkg/cjs").default
