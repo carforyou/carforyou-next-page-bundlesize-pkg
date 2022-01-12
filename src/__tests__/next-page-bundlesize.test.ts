@@ -1,6 +1,6 @@
 import fs from "fs"
 
-import run from "../../index"
+import run from "../index"
 
 const validRunConfig = [
   "jest",
