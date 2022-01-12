@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { parse } from "yargs"
 import path from "path"
 import fs from "fs"
@@ -96,24 +95,33 @@ const extractArgs = (args) => {
 }
 
 export default function run(args) {
-  const { maxSize, buildDir, delta, previousConfigFileName } = extractArgs(args)
-  const manifestFile = path.join(buildDir, "build-manifest.json")
-  const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
+  try {
+    const { maxSize, buildDir, delta, previousConfigFileName } =
+      extractArgs(args)
+    const manifestFile = path.join(buildDir, "build-manifest.json")
+    const manifest = JSON.parse(fs.readFileSync(manifestFile).toString())
 
-  const pageBundles = concatenatePageBundles({ buildDir, manifest })
-  const previousConfiguration = getPreviousConfig(
-    buildDir,
-    previousConfigFileName
-  )
-  const config = generateBundleSizeConfig({
-    pageBundles,
-    maxSize,
-    previousConfiguration,
-  })
-  const configFile = path.join(buildDir, "next-page-bundlesize.config.json")
-  fs.writeFileSync(configFile, JSON.stringify(config, null, 2))
+    const pageBundles = concatenatePageBundles({ buildDir, manifest })
+    const previousConfiguration = getPreviousConfig(
+      buildDir,
+      previousConfigFileName
+    )
+    const config = generateBundleSizeConfig({
+      pageBundles,
+      maxSize,
+      previousConfiguration,
+    })
+    const configFile = path.join(buildDir, "next-page-bundlesize.config.json")
+    fs.writeFileSync(configFile, JSON.stringify(config, null, 2))
 
-  execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
+    execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
 
-  writeNewConfigFile(config, delta, maxSize, buildDir)
+    writeNewConfigFile(config, delta, maxSize, buildDir)
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err)
+    process.exit(1)
+  }
+
+  process.exit(0)
 }
