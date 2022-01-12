@@ -32,6 +32,7 @@
     "bundlesize": "0.18.1",
     "yargs": "17.3.1"
   },
+  "bin" : { "next-page-bundlesize": "./pkg/cjs/index.js" },
   "main": "pkg/cjs/index.js",
   "module": "pkg/esm/index.js",
   "files": [
