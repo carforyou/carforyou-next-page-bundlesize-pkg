@@ -4,7 +4,7 @@ import bytes from "bytes"
 // eslint-disable-next-line import/no-internal-modules
 import compressedSize from "bundlesize/src/compressed-size"
 
-import { BundleSizeConfig } from "./index"
+import { BundleSizeConfig } from "./check"
 
 export const writeNewConfigFile = (
   oldConfig: BundleSizeConfig,
