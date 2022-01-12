@@ -1,6 +1,6 @@
 import fs from "fs"
 
-import run from "../index"
+import check from "../check"
 
 const validRunConfig = [
   "jest",
@@ -20,7 +20,7 @@ describe("cli", () => {
   })
 
   it("produces config with correct files and sizes", () => {
-    run(validRunConfig)
+    check(validRunConfig)
 
     const config = fs
       .readFileSync("./src/__tests__/.next/next-page-bundlesize.config.json")
@@ -30,7 +30,7 @@ describe("cli", () => {
   })
 
   it("produces concatenated bundle file", () => {
-    run(validRunConfig)
+    check(validRunConfig)
 
     const page = fs
       .readFileSync("./src/__tests__/.next/.bundlesize_")
@@ -40,7 +40,7 @@ describe("cli", () => {
   })
 
   it("fails when bundles are larger than the limit", () => {
-    run([
+    check([
       "jest",
       "./node_modules/.bin/jest",
       "--maxSize",
@@ -52,7 +52,7 @@ describe("cli", () => {
   })
 
   it("uses the previous config if defined", () => {
-    run([...validRunConfig, "--previousConfigFileName", "master-config.json"])
+    check([...validRunConfig, "--previousConfigFileName", "master-config.json"])
 
     const updatedConfig = fs
       .readFileSync("./src/__tests__/.next/bundlesize.json")
@@ -61,7 +61,7 @@ describe("cli", () => {
   })
 
   it("adds a delta to the new config if smaller than maxSize", () => {
-    run([
+    check([
       ...validRunConfig,
       "--previousConfigFileName",
       "master-config.json",
