@@ -113,10 +113,9 @@ export default function check(args) {
     })
     const configFile = path.join(buildDir, "next-page-bundlesize.config.json")
     fs.writeFileSync(configFile, JSON.stringify(config, null, 2))
+    writeNewConfigFile(config, delta, maxSize, buildDir)
 
     execSync(`npx bundlesize --config=${configFile}`, { stdio: "inherit" })
-
-    writeNewConfigFile(config, delta, maxSize, buildDir)
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err)
