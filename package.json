@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "bundlesize": "0.18.1",
-    "yargs": "17.3.1"
+    "yargs": "17.4.0"
   },
   "bin" : {
     "next-page-bundlesize": "./pkg/index.js"
