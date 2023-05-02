@@ -1,5 +1,6 @@
 module.exports = {
   globals: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     "ts-jest": {
       tsConfig: "tsconfig.json",
       diagnostics: false,
