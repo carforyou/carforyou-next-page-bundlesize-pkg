@@ -18,7 +18,7 @@
   "license": "MIT",
   "homepage": "https://github.com/carforyou/carforyou-next-page-bundlesize-pkg#readme",
   "devDependencies": {
-    "@babel/core": "7.23.3",
+    "@babel/core": "7.23.5",
     "@carforyou/eslint-config": "4.0.79",
     "@types/jest": "29.5.10",
     "bytes": "3.1.2",
